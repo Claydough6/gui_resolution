@@ -48,6 +48,7 @@ name = StringVar()
 label = ttk.Label(content, text="Name the feather:")
 box = ttk.Entry(content, textvariable=name)
 namelbl = ttk.Label(imageframe, textvariable=name)
+namelbl.config(foreground="cornflower blue")
 
 # lay everything out in the app
 content.grid(column=0, row=0)
