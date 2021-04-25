@@ -7,6 +7,16 @@ def addToMessage():
     temp += '.'
     message.set(temp)
 
+# a function to be used with the entry box
+def modText(window):
+    text = entered.get()
+    for i in range(len(text)):
+        if i % 2 == 0:
+            text = text[:i] + text[i].upper() + text[i+1:]
+        else:
+            text = text[:i] + text[i].lower() + text[i+1:]
+    display.set(text)
+
 # create the main window
 root = Tk()
 
@@ -44,6 +54,18 @@ clay.grid()
 kevin.grid()
 namelabel = ttk.Label(frame, textvariable=name)
 namelabel.grid()
+
+# create a text entry box and print out the value modified
+# note for some reason this takes a while to update...
+instruction = ttk.Label(frame, text="Enter some text then press enter.")
+entered = StringVar()
+display = StringVar()
+entry = ttk.Entry(frame, textvariable=entered)
+entry.bind("<Enter>", modText)
+output = ttk.Label(frame, textvariable=display)
+instruction.grid()
+entry.grid()
+output.grid()
 
 # update the theme of the test app
 s = ttk.Style()
