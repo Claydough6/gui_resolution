@@ -5,8 +5,10 @@ from tkinter import ttk
 def updateFeather():
     if pic.winfo_viewable():
         pic.grid_remove()
+        namelbl.grid_remove()
     else:
         pic.grid()
+        namelbl.grid()
 
 # create the root window
 root = Tk()
@@ -21,15 +23,17 @@ c2 = ttk.Checkbutton(subframe, text="Two")
 c3 = ttk.Checkbutton(subframe, text="Three")
 ok = ttk.Button(subframe, text="Click Me!", command=updateFeather)
 
-# make the text box to enter stuff into
-label = ttk.Label(content, text="Enter some text:")
-box = ttk.Entry(content)
-
 # put the image in another box
 imageframe = ttk.Frame(content, borderwidth=5, relief='raised')
 feather = PhotoImage(file="feather.png")
 pic = ttk.Label(imageframe)
 pic['image'] = feather
+
+# make the text box to enter stuff into and name feather
+name = StringVar()
+label = ttk.Label(content, text="Name the feather:")
+box = ttk.Entry(content, textvariable=name)
+namelbl = ttk.Label(imageframe, textvariable=name)
 
 # lay everything out in the app
 content.grid(column=0, row=0)
@@ -44,6 +48,7 @@ ok.grid(column=3, row=2, columnspan=2, padx=5)
 label.grid(column=3, row=0, columnspan=2, padx=15)  # pad edges nicely
 box.grid(column=3, row=1, columnspan=2, padx=15)
 pic.grid()
+namelbl.grid(sticky=E)
 
 # give weights to the row and column expansions
 root.columnconfigure(0, weight=1)
