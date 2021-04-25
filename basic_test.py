@@ -29,7 +29,7 @@ button.grid()
 
 # update the theme of the test app
 s = ttk.Style()
-s.theme_use('xpnative')
+s.theme_use('clam')
 
 # start up the frame
 root.mainloop()
