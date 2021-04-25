@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import ttk
+from ttkthemes import ThemedTk
 
 lastx, lasty = 0, 0
 
@@ -13,8 +14,8 @@ def drawLine(event):
     canvas.create_line(lastx, lasty, x, y, fill="red")
     lastx, lasty = x, y
 
-# create the root window
-root = Tk()
+# create the root window (themed now!)
+root = ThemedTk(theme="breeze")
 root.title("Canvas Window")
 root.option_add('*tearOff', FALSE)  # so the menu doesn't look weird
 
