@@ -34,6 +34,17 @@ check.grid()
 face = ttk.Label(frame, textvariable=checkValue)
 face.grid()
 
+# create a radiobutton and display some text
+question = ttk.Label(frame, text="Who are you?")
+question.grid()
+name = StringVar()
+clay = ttk.Radiobutton(frame, text="Clay", variable=name, value="Hello Clay!")
+kevin = ttk.Radiobutton(frame, text="Kevin", variable=name, value="Hello Kevin!")
+clay.grid()
+kevin.grid()
+namelabel = ttk.Label(frame, textvariable=name)
+namelabel.grid()
+
 # update the theme of the test app
 s = ttk.Style()
 s.theme_use('clam')
