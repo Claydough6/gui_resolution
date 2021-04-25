@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import ttk
+from ttkthemes import ThemedTk
 
 # used to hide / show the feather
 def updateFeather():
@@ -11,7 +12,7 @@ def updateFeather():
         namelbl.grid()
 
 # create the root window
-root = Tk()
+root = ThemedTk(theme="breeze")
 root.title("Feather Window")
 root.option_add('*tearOff', FALSE)  # so the menu doesn't look weird
 

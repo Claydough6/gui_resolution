@@ -1,8 +1,9 @@
 from tkinter import *
 from tkinter import ttk
+from ttkthemes import ThemedTk
 
 # create main root window
-root = Tk()
+root = ThemedTk(theme="breeze")
 
 # string vars used
 nlist = ["Line {} of 100".format(i) for i in range(1, 101)]
@@ -12,7 +13,7 @@ display = StringVar()
 # used to update the selection text
 def updateSelection(*args):
     selection = lbox.curselection()[0]
-    display.set("Selection: " + nlist[selection][:7])
+    display.set("Selection: " + nlist[selection][:7].strip())
 
 # create the listbox of lines
 lbox = Listbox(root, listvariable=names, selectmode="browse", height=10)
