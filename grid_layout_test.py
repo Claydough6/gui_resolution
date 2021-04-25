@@ -1,6 +1,13 @@
 from tkinter import *
 from tkinter import ttk
 
+# used to hide / show the feather
+def updateFeather():
+    if pic.winfo_viewable():
+        pic.grid_remove()
+    else:
+        pic.grid()
+
 # create the root window
 root = Tk()
 
@@ -12,20 +19,22 @@ subframe = ttk.Frame(content, borderwidth=5, relief='sunken')
 c1 = ttk.Checkbutton(subframe, text="One")
 c2 = ttk.Checkbutton(subframe, text="Two")
 c3 = ttk.Checkbutton(subframe, text="Three")
-ok = ttk.Button(subframe, text="Click Me!")
+ok = ttk.Button(subframe, text="Click Me!", command=updateFeather)
 
 # make the text box to enter stuff into
 label = ttk.Label(content, text="Enter some text:")
 box = ttk.Entry(content)
 
 # put the image in another box
+imageframe = ttk.Frame(content, borderwidth=5, relief='raised')
 feather = PhotoImage(file="feather.png")
-pic = ttk.Label(content)
+pic = ttk.Label(imageframe)
 pic['image'] = feather
 
 # lay everything out in the app
 content.grid(column=0, row=0)
 subframe.grid(column=0, row=2, columnspan=5 ,pady=5)
+imageframe.grid(column=0, row=0, columnspan=3, rowspan=2)
 
 c1.grid(column=0, row=2, padx=5)
 c2.grid(column=1, row=2, padx=5)
@@ -34,7 +43,26 @@ ok.grid(column=3, row=2, columnspan=2, padx=5)
 
 label.grid(column=3, row=0, columnspan=2, padx=15)  # pad edges nicely
 box.grid(column=3, row=1, columnspan=2, padx=15)
-pic.grid(column=0, row=0, columnspan=3, rowspan=2)
+pic.grid()
+
+# give weights to the row and column expansions
+root.columnconfigure(0, weight=1)
+root.rowconfigure(0, weight=1)
+
+content.columnconfigure(0, weight=1)
+content.columnconfigure(1, weight=1)
+content.columnconfigure(2, weight=1)
+content.columnconfigure(3, weight=1)
+content.columnconfigure(4, weight=1)
+content.rowconfigure(0, weight=1)
+content.rowconfigure(1, weight=1)
+content.rowconfigure(2, weight=1)
+
+subframe.columnconfigure(0, weight=1)
+subframe.columnconfigure(1, weight=1)
+subframe.columnconfigure(2, weight=1)
+subframe.columnconfigure(3, weight=1)
+subframe.columnconfigure(4, weight=1)
 
 # run the app
 root.mainloop()
