@@ -18,6 +18,10 @@ def updateSelection(*args):
 lbox = Listbox(root, listvariable=names, selectmode="browse", height=10)
 lbox.bind("<<ListboxSelect>>", updateSelection)
 
+# colorize alternating lines of the listbox
+for i in range(0,len(nlist),2):
+    lbox.itemconfigure(i, background='#EAEAEA')
+
 # create the scrollbar
 sbar = ttk.Scrollbar(root, orient=VERTICAL, command=lbox.yview)
 lbox.configure(yscrollcommand=sbar.set)
