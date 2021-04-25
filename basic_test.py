@@ -27,9 +27,16 @@ label.grid()
 button = ttk.Button(frame, text="push me", command=addToMessage)
 button.grid()
 
+# create a check box thing and display some text
+checkValue = StringVar()
+check = ttk.Checkbutton(frame, text="are you happy?", variable=checkValue, onvalue=":)", offvalue=":(")
+check.grid()
+face = ttk.Label(frame, textvariable=checkValue)
+face.grid()
+
 # update the theme of the test app
 s = ttk.Style()
-s.theme_use('xpnative')
+s.theme_use('clam')
 
 # start up the frame
 root.mainloop()
