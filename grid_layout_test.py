@@ -12,10 +12,24 @@ def updateFeather():
 
 # create the root window
 root = Tk()
+root.title("Feather Window")
+root.option_add('*tearOff', FALSE)  # so the menu doesn't look weird
 
 # create the main frame of the program and the sub frame
 content = ttk.Frame(root)
 subframe = ttk.Frame(content, borderwidth=5, relief='sunken')
+
+# create a menu
+menubar = Menu(root)
+sub1 = Menu(root)
+
+menubar.add_cascade(label="test1", menu=sub1)
+
+sub1.add_command(label='a')
+sub1.add_command(label='b')
+sub1.add_command(label='c')
+
+root.configure(menu=menubar)
 
 # make the checks to go in the subframe
 c1 = ttk.Checkbutton(subframe, text="One")
