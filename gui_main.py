@@ -5,7 +5,7 @@ from ttkthemes import ThemedTk
 __version__ = 0.1
 
 # create the root window
-root = ThemedTk(theme="breeze")
+root = ThemedTk()
 root.title("Graphical Resolution " + str(__version__))
 root.option_add('*tearOff', FALSE)  # so the menu doesn't tear
 
