@@ -31,15 +31,17 @@ filemenu.add_command(label='Save As')
 root.configure(menu=menubar)
 
 # create the main frames used
-resolution = ttk.Labelframe(root, text="Resolution:", relief="raised")
+resolution = ttk.Labelframe(root, text="Resolution:")
 resolution['width'] = 500
 resolution['height'] = 400
 
-statements = ttk.Labelframe(root, text="Statements:")
+leftframe = ttk.Frame(root)
+
+statements = ttk.Labelframe(leftframe, text="Statements:")
 statements['width'] = 100
 statements['height'] = 250
 
-tools = ttk.Frame(root)
+tools = ttk.Frame(leftframe)
 tools['width'] = 100
 tools['height'] = 150
 
@@ -50,6 +52,8 @@ editConclusion = ttk.Button(tools, text="Edit Conclusion")
 
 # grid everything into the app
 resolution.grid(row=0, column=1, rowspan=3, padx=5, pady=5, sticky=(N,E,S,W))
+leftframe.grid(row=0, column=0, sticky=(N,E,S,W))
+
 statements.grid(row=0, column=0, padx=5, pady=5, sticky=(N,E,S,W))
 tools.grid(row=1, column=0, padx=5)
 
@@ -59,9 +63,12 @@ editConclusion.grid(pady=2)
 
 # specify how columns and row expand
 root.grid_columnconfigure(0, weight=1)
-root.grid_columnconfigure(1, weight=3)
+root.grid_columnconfigure(1, weight=5)
 root.grid_rowconfigure(0, weight=1)
-root.grid_rowconfigure(1, weight=1)
+
+leftframe.grid_columnconfigure(0, weight=1)
+leftframe.grid_rowconfigure(0, weight=2)
+leftframe.grid_rowconfigure(1, weight=1)
 
 # start up the app
 root.mainloop()
