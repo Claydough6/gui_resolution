@@ -15,7 +15,9 @@ root.option_add('*tearOff', FALSE)  # so the menu doesn't tear
 def getHelp(*args):
     help_window = Toplevel(root)
     help_window.title("Help Window")
-    help_text = "This is where the directions go..."
+    help_text = "Error..."
+    with open('help.txt', 'r') as f:
+        help_text = f.read()
     label = ttk.Label(help_window, text=help_text)
     label.grid(padx=10, pady=10)
 
@@ -44,10 +46,17 @@ plist = EditListbox(statements)
 plist.configure(selectmode="browse")
 plist.colorize()
 
+# create the conclusion list
+clist = EditListbox(statements)
+clist.configure(selectmode="browse")
+clist.configure(height=1)
+clist.insert(0, "Conclusion")
+clist.color = "IndianRed1"
+clist.colorize()
+
 # create the buttons for the tools
 newPremise = ttk.Button(tools, text="New Premise", command=plist.add_premise)
 deletePremise = ttk.Button(tools, text="Delete Premise", command=plist.remove_premise)
-editConclusion = ttk.Button(tools, text="Edit Conclusion")
 
 # create the canvas to do the resolution on
 canvas = Canvas(resolution)
@@ -66,11 +75,11 @@ tools.grid(row=1, column=0, padx=5)
 
 newPremise.grid(pady=2)
 deletePremise.grid(pady=2)
-editConclusion.grid(pady=2)
 
 canvas.grid(sticky=(N,E,S,W))
 
 plist.grid(row=0, column=0, sticky=(N,E,S,W))
+clist.grid(row=1, column=0, sticky=(E,W,S))
 sbar.grid(row=0, column=1, sticky=(N,S,E))
 
 # setup a sizegrip item at the bottom right corner
