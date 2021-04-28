@@ -5,6 +5,7 @@ class EditListbox(Listbox):
     def __init__(self, master, **kwargs):
         super().__init__(master, **kwargs)
         self.edit_index = None
+        self.color = None
         self.bind("<Double-1>", self.edit)
 
     # used to add an entry box and edit the list
@@ -53,7 +54,10 @@ class EditListbox(Listbox):
     def colorize(self):
         for i in range(0, self.size()):
             if i % 2 == 0:
-                self.itemconfigure(i, background='#EAEAEA')
+                if self.color:
+                    self.itemconfigure(i, background=self.color)
+                else:
+                    self.itemconfigure(i, background='#EAEAEA')
             else:
                 self.itemconfigure(i, background='white')   
 

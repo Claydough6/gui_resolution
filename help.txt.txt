@@ -1,0 +1,12 @@
+How to use the application:
+
+1. Add premises to the list with the 'Add Premise' button
+  -  you can add as many premises as you want
+  -  you can only have one conclusion 
+
+2. Delete premises by clicking on the premise then clicking the 'Delete Premise' button
+
+3. Edit the premises or conclusion by double clicking on the statement you want to edit.
+  -  type in the new statement
+  -  hit 'Enter' to save your input
+  -  hit 'Escape' to stop editing without saving
