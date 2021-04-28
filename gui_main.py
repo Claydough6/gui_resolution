@@ -2,6 +2,8 @@ from tkinter import *
 from tkinter import ttk
 from ttkthemes import ThemedTk
 
+from edit_listbox import EditListbox
+
 __version__ = 0.1
 
 # create the root window
@@ -37,23 +39,19 @@ leftframe = ttk.Frame(root)
 statements = ttk.Labelframe(leftframe, text="Statements:")
 tools = ttk.Frame(leftframe)
 
+# create the list of premises
+plist = EditListbox(statements)
+plist.configure(selectmode="browse")
+plist.colorize()
+
 # create the buttons for the tools
-newPremise = ttk.Button(tools, text="New Premise")
-editPremise = ttk.Button(tools, text="Edit Premise")
+newPremise = ttk.Button(tools, text="New Premise", command=plist.add_premise)
+deletePremise = ttk.Button(tools, text="Delete Premise", command=plist.remove_premise)
 editConclusion = ttk.Button(tools, text="Edit Conclusion")
 
 # create the canvas to do the resolution on
 canvas = Canvas(resolution)
 canvas.configure(bg='white')
-
-# create the list of premises
-premises = [str(i) for i in range(100)]
-names = StringVar(value=premises)
-plist = Listbox(statements, listvariable=names, selectmode="browse")
-
-# colorize alternating lines of the listbox
-for i in range(0,len(premises),2):
-    plist.itemconfigure(i, background='#EAEAEA')
 
 # create the scrollbar
 sbar = ttk.Scrollbar(statements, orient=VERTICAL, command=plist.yview)
@@ -67,7 +65,7 @@ statements.grid(row=0, column=0, padx=5, pady=5, sticky=(N,E,S,W))
 tools.grid(row=1, column=0, padx=5)
 
 newPremise.grid(pady=2)
-editPremise.grid(pady=2)
+deletePremise.grid(pady=2)
 editConclusion.grid(pady=2)
 
 canvas.grid(sticky=(N,E,S,W))
