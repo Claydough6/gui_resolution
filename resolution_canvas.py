@@ -4,6 +4,7 @@ from tkinter import ttk
 class ResolutionCanvas(Canvas):
     def __init__(self, master, **kwargs):
         super().__init__(master, **kwargs)
+        self.active = None
         self.bind("<Double-1>", self.add_statement)
 
     def add_statement(self, event):
@@ -26,12 +27,12 @@ class ResolutionCanvas(Canvas):
         id1 = self.create_window(event.x, event.y, window=frame, tags=("statement"))
 
         # add the various bindings needed
-        self.tag_bind("statement", "<Button-1>", self.update_frame)
+        # note: need to add these
 
     def get_statement_frames(self):
         return self.find_withtag("statement")
 
-    def update_frame(self, event):
-        print(self.find_withtag("current"))
-        print("hey")
+    # used to drag the clause frames around the screen
+    def move_frame(self, event):
+        pass
         
