@@ -6,6 +6,7 @@ class ResolutionCanvas(Canvas):
         super().__init__(master, **kwargs)
         self.active = None
         self.bind("<Double-1>", self.add_statement)
+        self.bind("<Button-1>", lambda event: self.focus_set())
 
     def add_statement(self, event):
         # create the frame
