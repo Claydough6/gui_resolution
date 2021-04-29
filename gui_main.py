@@ -3,6 +3,7 @@ from tkinter import ttk
 from ttkthemes import ThemedTk
 
 from edit_listbox import EditListbox
+from resolution_canvas import ResolutionCanvas
 
 __version__ = 0.1
 
@@ -23,7 +24,7 @@ def getHelp(*args):
 
 # create the menus
 menubar = Menu(root)    # main menu
-filemenu = Menu(root)   # file options menu'
+filemenu = Menu(root)   # file options menu
 
 menubar.add_cascade(label="File", menu=filemenu)
 menubar.add_command(label="Help", command=getHelp)
@@ -42,14 +43,11 @@ statements = ttk.Labelframe(leftframe, text="Statements:")
 tools = ttk.Frame(leftframe)
 
 # create the list of premises
-plist = EditListbox(statements)
-plist.configure(selectmode="browse")
+plist = EditListbox(statements, selectmode="browse")
 plist.colorize()
 
 # create the conclusion list
-clist = EditListbox(statements)
-clist.configure(selectmode="browse")
-clist.configure(height=1)
+clist = EditListbox(statements, selectmode="browse", height=1)
 clist.insert(0, "Conclusion")
 clist.color = "IndianRed1"
 clist.colorize()
@@ -59,7 +57,7 @@ newPremise = ttk.Button(tools, text="New Premise", command=plist.add_premise)
 deletePremise = ttk.Button(tools, text="Delete Premise", command=plist.remove_premise)
 
 # create the canvas to do the resolution on
-canvas = Canvas(resolution)
+canvas = ResolutionCanvas(resolution)
 canvas.configure(bg='white')
 
 # create the scrollbar

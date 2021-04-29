@@ -10,3 +10,6 @@ How to use the application:
   -  type in the new statement
   -  hit 'Enter' to save your input
   -  hit 'Escape' to stop editing without saving
+
+4. To add clauses to the resolution screen, double click on an empty space to create a new statement box. 
+  -  edit the text to add a clause
