@@ -5,7 +5,7 @@ from ttkthemes import ThemedTk
 from edit_listbox import EditListbox
 from resolution_canvas import ResolutionCanvas
 
-__version__ = 0.1
+__version__ = 0.2
 
 # create the root window
 root = ThemedTk()
