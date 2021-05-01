@@ -11,5 +11,15 @@ How to use the application:
   -  hit 'Enter' to save your input
   -  hit 'Escape' to stop editing without saving
 
-4. To add clauses to the resolution screen, double click on an empty space to create a new statement box. 
+4. To add clauses to the resolution screen, shift-click on an empty space to create a new statement box. 
   -  edit the text to add a clause
+
+5. Clauses can be selected to modify their properties. To select a clause, click on the space right next to a clause. 
+  -  it will raise up to indicate it has been selected.
+  -  click anywhere else to deselect a clause
+
+6. To move a clause, select it and drag it around the screen.
+
+7. To derive a clause from another, select the derived clause. Then select the clauses it comes from. 
+  -  arrows will be drawn to show the relationship.
+  -  click again to undo a derivation relationship
