@@ -5,64 +5,88 @@ from ttkthemes import ThemedTk
 from resolution_canvas import ResolutionCanvas
 from statement_frame import StatementFrame
 
-__version__ = 0.3
+class ResolutionApp():
+    def __init__(self):
+        # useful variables
+        self.__version__ = 0.3
 
-# create the root window
-root = ThemedTk()
-root.title("Graphical Resolution " + str(__version__))
-root.option_add('*tearOff', FALSE)  # so the menu doesn't tear
+        # used to help transfer between subapps
+        self.selected_clause = None
+        self.selected_statement = None
 
-# used to display the help menu
-def getHelp(*args):
-    help_window = Toplevel(root)
-    help_window.title("Help Window")
-    help_text = "Error..."
-    with open('help.txt', 'r') as f:
-        help_text = f.read()
-    label = ttk.Label(help_window, text=help_text)
-    label.grid(padx=10, pady=10)
+        # create the root window
+        self.root = ThemedTk()
+        self.root.title("Graphical Resolution " + str(self.__version__))
+        self.root.option_add('*tearOff', FALSE)  # so the menu doesn't tear
 
-# create the menus
-menubar = Menu(root)    # main menu
-filemenu = Menu(root)   # file options menu
+        # create the menus
+        self.create_menu()
 
-menubar.add_cascade(label="File", menu=filemenu)
-menubar.add_command(label="Help", command=getHelp)
+        # create the main frames used
+        self.resolution = ttk.Labelframe(self.root, text="Resolution:")
+        self.leftframe = StatementFrame(self.root)
+        self.leftframe.set_app(self)
 
-filemenu.add_command(label='Open')
-filemenu.add_command(label='Save')
-filemenu.add_command(label='Save As')
+        # create the canvas to do the resolution on
+        self.canvas = ResolutionCanvas(self.resolution)
+        self.canvas.configure(bg='white')
 
-root.configure(menu=menubar)
+        # setup a sizegrip item at the bottom right corner
+        ttk.Sizegrip().grid(column=1, row=1, sticky=(S,E))
 
-# create the main frames used
-resolution = ttk.Labelframe(root, text="Resolution:")
-leftframe = StatementFrame(root)
+        # grid the widgets and setup the expansions
+        self.grid()
+        self.set_row_col()
 
-# create the canvas to do the resolution on
-canvas = ResolutionCanvas(resolution)
-canvas.configure(bg='white')
+    # used to display the help menu
+    def get_help(self, *args):
+        help_window = Toplevel(self.root)
+        help_window.title("Help Window")
+        help_text = "Error..."
+        with open('help.txt', 'r') as f:
+            help_text = f.read()
+        label = ttk.Label(help_window, text=help_text)
+        label.grid(padx=10, pady=10)
 
-# grid everything into the app
-resolution.grid(row=0, column=1, rowspan=3, padx=5, pady=5, sticky=(N,E,S,W))
-leftframe.grid(row=0, column=0, sticky=(N,E,S,W))
+    def create_menu(self):
+        # create the menus
+        self.menubar = Menu(self.root)    # main menu
+        self.filemenu = Menu(self.root)   # file options menu
 
-canvas.grid(sticky=(N,E,S,W))
+        self.menubar.add_cascade(label="File", menu=self.filemenu)
+        self.menubar.add_command(label="Help", command=self.get_help)
 
-# setup a sizegrip item at the bottom right corner
-ttk.Sizegrip().grid(column=1, row=1, sticky=(S,E))
+        self.filemenu.add_command(label='Open')
+        self.filemenu.add_command(label='Save')
+        self.filemenu.add_command(label='Save As')
 
-# specify how columns and row expand
-root.grid_columnconfigure(0, weight=1)
-root.grid_columnconfigure(1, weight=5)
-root.grid_rowconfigure(0, weight=1)
+        self.root.configure(menu=self.menubar)
 
-resolution.grid_columnconfigure(0, weight=1)
-resolution.grid_rowconfigure(0, weight=1)
+    # grid everything into the app
+    def grid(self):
+        self.resolution.grid(row=0, column=1, rowspan=3, padx=5, pady=5, sticky=(N,E,S,W))
+        self.leftframe.grid(row=0, column=0, sticky=(N,E,S,W))
 
-leftframe.grid_columnconfigure(0, weight=1)
-leftframe.grid_rowconfigure(0, weight=5)
-leftframe.grid_rowconfigure(1, weight=1)
+        self.canvas.grid(sticky=(N,E,S,W))
+
+    # specify how columns and row expand
+    def set_row_col(self):
+        self.root.grid_columnconfigure(0, weight=1)
+        self.root.grid_columnconfigure(1, weight=5)
+        self.root.grid_rowconfigure(0, weight=1)
+
+        self.resolution.grid_columnconfigure(0, weight=1)
+        self.resolution.grid_rowconfigure(0, weight=1)
+
+        self.leftframe.grid_columnconfigure(0, weight=1)
+        self.leftframe.grid_rowconfigure(0, weight=5)
+        self.leftframe.grid_rowconfigure(1, weight=1)
+
+    def start(self):
+        self.root.mainloop()
+
 
 # start up the app
-root.mainloop()
+if __name__ == "__main__":
+    app = ResolutionApp()
+    app.start()

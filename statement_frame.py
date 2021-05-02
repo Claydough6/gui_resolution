@@ -8,6 +8,9 @@ class StatementFrame(ttk.Frame):
         # initialize the frame
         super().__init__(master, **kwargs)
 
+        # useful variables
+        self.app = None # the parent app
+
         # initialize the sub frames
         self.statements = ttk.Labelframe(self, text="Statements:")
         self.tools = ttk.Frame(self)
@@ -16,10 +19,14 @@ class StatementFrame(ttk.Frame):
         self.create_widgets()
         self.grid_widgets()
 
+    def set_app(self, app):
+        self.app = app
+
     def create_widgets(self):
         # create the list of premises
         self.plist = EditListbox(self.statements, selectmode="browse")
         self.plist.colorize()
+        self.plist.set_app(self.app)
 
         # create the conclusion list
         self.clist = EditListbox(self.statements, selectmode="browse", height=1)

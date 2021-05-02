@@ -4,14 +4,26 @@ from tkinter import *
 class EditListbox(Listbox):
     def __init__(self, master, **kwargs):
         super().__init__(master, **kwargs)
+
+        # variables
         self.edit_index = None
         self.color = None
+        self.list = list()  # keeps the items
+        self.app = None     # the parent app
+
+        # bindings
         self.bind("<Double-1>", self.edit)
+
+    def set_app(self, app):
+        self.app = app
+
+    def get_index(self, event):
+        return self.index("@{},{}".format(event.x, event.y))
 
     # used to add an entry box and edit the list
     def edit(self, event):
         # get and store the index
-        index = self.index("@{},{}".format(event.x, event.y))
+        index = self.get_index(event)
         self.edit_index = index
 
         # get the text and coordinates
