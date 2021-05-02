@@ -23,3 +23,9 @@ How to use the application:
 7. To derive a clause from another, select the derived clause. Then select the clauses it comes from. 
   -  arrows will be drawn to show the relationship.
   -  click again to undo a derivation relationship
+
+8. To derive a top level clause from a premise statement, select a clause.
+Click a premise to set it as the statement to get the clause from.
+  -  this only works for clauses that aren't linked to others
+  -  click the premise again to unlink it 
+  -  click a different premise to change which is linked
