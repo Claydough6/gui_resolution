@@ -14,6 +14,7 @@ class ResolutionCanvas(Canvas):
         
         self.bind("<Shift-1>", self.add_statement)
         self.bind("<Button-1>", self.click)
+        self.bind("<Key-Delete>", self.kill_clause)
 
     def add_statement(self, event):
         # create the frame
@@ -24,7 +25,41 @@ class ResolutionCanvas(Canvas):
         self.frames[id1] = frame
         frame.id = id1
 
+    def kill_clause(self, *args):
+        # see if something is selected
+        all_select = self.find_withtag("selected")
+        selected = None
+        if len(all_select) > 0:
+            selected = all_select[0]
+
+        if selected != None:
+            to_delete = list()
+            for start, end in self.lines.keys():
+                if start == selected:
+                    this = self.frames[end]
+                    # remove the other from this parents
+                    this.parents.remove(start)
+                    # if no parents, update state
+                    if len(this.parents) == 0:
+                        this.state = None
+                    # undraw the line
+                    to_delete.append((start, end))
+                if end == selected:
+                    this = self.frames[start]
+                    this.child = None
+                    # undraw the line
+                    to_delete.append((start, end))
+            self.delete(selected)
+            self.frames.pop(selected)
+            self.deselect()                     # removes selected tag
+            self.app.selected_clause_id = None
+            for start, end in to_delete:
+                self.remove_line(start, end)
+
     def click(self, event):
+        # focus the keyboard as well
+        self.focus_set()
+        
         # 1. get which frame is cicked
         clicked = None     # frame id if clicked
         for frame in self.get_statement_frames():
@@ -52,16 +87,16 @@ class ResolutionCanvas(Canvas):
                     if this.state != "topclause":
                         if other in this.parents:
                             # remove the other from this parents
-                            this.parents.remove(other)
+                            this.parents.remove(clicked)
                             other.child = None
                             # if no parents, update state
                             if len(this.parents) == 0:
-                                self.state = None
+                                this.state = None
                             # undraw the line
                             self.remove_line(clicked, selected)
                         elif len(this.parents) < 2 and other.child == None:
                             # update the parents
-                            this.parents.append(other)
+                            this.parents.append(clicked)
                             other.child = this
                             # update the state to regualar clause
                             this.state = "clause"
