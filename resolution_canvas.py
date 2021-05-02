@@ -4,26 +4,62 @@ from tkinter import ttk
 from clause_frame import ClauseFrame
 
 class ResolutionCanvas(Canvas):
-    def __init__(self, master, **kwargs):
+    def __init__(self, master, app, **kwargs):
         super().__init__(master, **kwargs)
         
         self.frames = dict()    # maps window id to frame
         self.lines = dict()     # maps frame id's to lines between them
         self.touchwidth = 20
+        self.app = app          # the parent app
         
         self.bind("<Shift-1>", self.add_statement)
         self.bind("<Button-1>", self.click)
+        self.bind("<Key-Delete>", self.kill_clause)
 
     def add_statement(self, event):
         # create the frame
-        frame = ClauseFrame(relief="flat", padding=(5, 5))
+        frame = ClauseFrame(self.app, relief="flat", padding=(5, 5))
 
         # add the frame into the canvas at the click position
         id1 = self.create_window(event.x, event.y, window=frame, tags=("statement"))
         self.frames[id1] = frame
         frame.id = id1
 
+    def kill_clause(self, *args):
+        # see if something is selected
+        all_select = self.find_withtag("selected")
+        selected = None
+        if len(all_select) > 0:
+            selected = all_select[0]
+
+        if selected != None:
+            to_delete = list()
+            for start, end in self.lines.keys():
+                if start == selected:
+                    this = self.frames[end]
+                    # remove the other from this parents
+                    this.parents.remove(start)
+                    # if no parents, update state
+                    if len(this.parents) == 0:
+                        this.state = None
+                    # undraw the line
+                    to_delete.append((start, end))
+                if end == selected:
+                    this = self.frames[start]
+                    this.child = None
+                    # undraw the line
+                    to_delete.append((start, end))
+            self.delete(selected)
+            self.frames.pop(selected)
+            self.deselect()                     # removes selected tag
+            self.app.selected_clause_id = None
+            for start, end in to_delete:
+                self.remove_line(start, end)
+
     def click(self, event):
+        # focus the keyboard as well
+        self.focus_set()
+        
         # 1. get which frame is cicked
         clicked = None     # frame id if clicked
         for frame in self.get_statement_frames():
@@ -47,17 +83,30 @@ class ResolutionCanvas(Canvas):
                     # update the parent
                     other = self.frames[clicked]
                     this = self.frames[selected]
-                    
-                    if other in this.parents:
-                        this.parents.remove(other)
-                        self.remove_line(clicked, selected)
-                    elif len(this.parents) < 2:
-                        this.parents.append(other)
-                        self.draw_line(clicked, selected)
+                    # make sure the clause frame is not a top level clause
+                    if this.state != "topclause":
+                        if clicked in this.parents:
+                            # remove the other from this parents
+                            this.parents.remove(clicked)
+                            other.child = None
+                            # if no parents, update state
+                            if len(this.parents) == 0:
+                                this.state = None
+                            # undraw the line
+                            self.remove_line(clicked, selected)
+                        elif len(this.parents) < 2 and other.child == None:
+                            # update the parents
+                            this.parents.append(clicked)
+                            other.child = this
+                            # update the state to regualar clause
+                            this.state = "clause"
+                            # draw the line between the two
+                            self.draw_line(clicked, selected)
 
             # b. if not, deselect the thing
             else:
                 self.deselect()     # removes selected tag
+                self.app.selected_clause_id = None
 
         # 3. set the bindings if something is clicked
         if clicked != None and (selected == None or selected == clicked):
@@ -66,6 +115,7 @@ class ResolutionCanvas(Canvas):
 
             # update the clicked to be selected
             self.addtag_withtag('selected', clicked)
+            self.app.selected_clause_id = clicked
             self.frames[clicked].configure(relief="raised")
 
     def draw_line(self, start, end):

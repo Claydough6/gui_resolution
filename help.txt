@@ -14,12 +14,20 @@ How to use the application:
 4. To add clauses to the resolution screen, shift-click on an empty space to create a new statement box. 
   -  edit the text to add a clause
 
-5. Clauses can be selected to modify their properties. To select a clause, click on the space right next to a clause. 
+5. To delete a clause, select it and hit the 'delete' key.
+  -  you cannot undo this as of now, so be careful
+
+6. Clauses can be selected to modify their properties. To select a clause, click on the space right next to a clause. 
   -  it will raise up to indicate it has been selected.
   -  click anywhere else to deselect a clause
 
-6. To move a clause, select it and drag it around the screen.
+7. To move a clause, select it and drag it around the screen.
 
-7. To derive a clause from another, select the derived clause. Then select the clauses it comes from. 
+8. To derive a clause from another, select the derived clause. Then select the clauses it comes from. 
   -  arrows will be drawn to show the relationship.
   -  click again to undo a derivation relationship
+
+9. To derive a top level clause from a premise statement, select a clause. Click a premise to set it as the statement to get the clause from.
+  -  this only works for clauses that aren't linked to others
+  -  click the premise again to unlink it 
+  -  click a different premise to change which is linked

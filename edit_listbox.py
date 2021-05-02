@@ -2,16 +2,32 @@ from tkinter import *
 
 # a listbox class to be used for premises and conclusions
 class EditListbox(Listbox):
-    def __init__(self, master, **kwargs):
+    def __init__(self, master, app, **kwargs):
         super().__init__(master, **kwargs)
+
+        # variables
         self.edit_index = None
         self.color = None
+        self.list = list()  # keeps the items
+        self.app = app      # the parent app
+
+        # bindings
         self.bind("<Double-1>", self.edit)
+        self.bind("<Button-1>", self.click)
+
+    def get_index(self, event):
+        return self.index("@{},{}".format(event.x, event.y))
+
+    def click(self, event):
+        index = self.get_index(event)
+        if self.app.selected_clause_id != None:
+            self.app.update_clause_premise(index)
+        
 
     # used to add an entry box and edit the list
     def edit(self, event):
         # get and store the index
-        index = self.index("@{},{}".format(event.x, event.y))
+        index = self.get_index(event)
         self.edit_index = index
 
         # get the text and coordinates

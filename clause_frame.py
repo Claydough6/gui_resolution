@@ -2,11 +2,20 @@ from tkinter import *
 from tkinter import ttk
 
 class ClauseFrame(ttk.Frame):
-    def __init__(self, master=None, **kwargs):
+    def __init__(self, app, master=None, **kwargs):
         # useful variables
         self.text = StringVar()
-        self.parents = list()
+        self.info = StringVar()
+        self.info.set("invalid")
+        
         self.id = None
+        self.app = app
+        
+        self.parents = list()
+        self.child = None
+        self.premise_index = None
+
+        self.state = None
         
         # initialize the frame
         super().__init__(master, **kwargs)
@@ -16,7 +25,7 @@ class ClauseFrame(ttk.Frame):
         self.text1.grid(row=0)
 
         # make and grid the valid text in the frame
-        self.valid = ttk.Label(self, text="invalid")
+        self.valid = ttk.Label(self, textvariable=self.info)
         self.valid.grid(row=1, sticky=(W))
 
         # make and grid the check button in the frame
