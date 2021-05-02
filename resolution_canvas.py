@@ -85,7 +85,7 @@ class ResolutionCanvas(Canvas):
                     this = self.frames[selected]
                     # make sure the clause frame is not a top level clause
                     if this.state != "topclause":
-                        if other in this.parents:
+                        if clicked in this.parents:
                             # remove the other from this parents
                             this.parents.remove(clicked)
                             other.child = None
