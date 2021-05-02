@@ -50,9 +50,11 @@ class ResolutionCanvas(Canvas):
                     
                     if other in this.parents:
                         this.parents.remove(other)
+                        other.child = None
                         self.remove_line(clicked, selected)
-                    elif len(this.parents) < 2:
+                    elif len(this.parents) < 2 and other.child == None:
                         this.parents.append(other)
+                        other.child = this
                         self.draw_line(clicked, selected)
 
             # b. if not, deselect the thing

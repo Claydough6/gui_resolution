@@ -6,6 +6,7 @@ class ClauseFrame(ttk.Frame):
         # useful variables
         self.text = StringVar()
         self.parents = list()
+        self.child = None
         self.id = None
         
         # initialize the frame
