@@ -48,28 +48,30 @@ class ResolutionCanvas(Canvas):
                     # update the parent
                     other = self.frames[clicked]
                     this = self.frames[selected]
-                    
-                    if other in this.parents:
-                        # remove the other from this parents
-                        this.parents.remove(other)
-                        other.child = None
-                        # if no parents, update state
-                        if len(parents) == 0:
-                            self.state = None
-                        # undraw the line
-                        self.remove_line(clicked, selected)
-                    elif len(this.parents) < 2 and other.child == None:
-                        # update the parents
-                        this.parents.append(other)
-                        other.child = this
-                        # update the state to regualar clause
-                        self.state = "clause"
-                        # draw the line between the two
-                        self.draw_line(clicked, selected)
+                    # make sure the clause frame is not a top level clause
+                    if this.state != "topclause":
+                        if other in this.parents:
+                            # remove the other from this parents
+                            this.parents.remove(other)
+                            other.child = None
+                            # if no parents, update state
+                            if len(this.parents) == 0:
+                                self.state = None
+                            # undraw the line
+                            self.remove_line(clicked, selected)
+                        elif len(this.parents) < 2 and other.child == None:
+                            # update the parents
+                            this.parents.append(other)
+                            other.child = this
+                            # update the state to regualar clause
+                            this.state = "clause"
+                            # draw the line between the two
+                            self.draw_line(clicked, selected)
 
             # b. if not, deselect the thing
             else:
                 self.deselect()     # removes selected tag
+                self.app.selected_clause_id = None
 
         # 3. set the bindings if something is clicked
         if clicked != None and (selected == None or selected == clicked):
@@ -78,6 +80,7 @@ class ResolutionCanvas(Canvas):
 
             # update the clicked to be selected
             self.addtag_withtag('selected', clicked)
+            self.app.selected_clause_id = clicked
             self.frames[clicked].configure(relief="raised")
 
     def draw_line(self, start, end):

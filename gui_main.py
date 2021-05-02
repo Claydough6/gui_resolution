@@ -5,14 +5,13 @@ from ttkthemes import ThemedTk
 from resolution_canvas import ResolutionCanvas
 from statement_frame import StatementFrame
 
-class ResolutionApp():
+class ResolutionGUI():
     def __init__(self):
         # useful variables
         self.__version__ = 0.3
 
         # used to help transfer between subapps
-        self.selected_clause = None
-        self.selected_statement = None
+        self.selected_clause_id = None
 
         # create the root window
         self.root = ThemedTk()
@@ -46,6 +45,26 @@ class ResolutionApp():
             help_text = f.read()
         label = ttk.Label(help_window, text=help_text)
         label.grid(padx=10, pady=10)
+
+    def update_clause_premise(self, index):
+        # get the clause frame that is selected
+        clause = self.canvas.frames[self.selected_clause_id]
+
+        # if the selected is in a blank state, set the premise
+        if clause.state == None:
+            clause.state = "topclause"
+            clause.premise_index = index
+            clause.info.set("p: " + str(index))
+
+        # if the selected is a top level clause, update it
+        elif clause.state == "topclause":
+            if clause.premise_index == index:
+                clause.state = None
+                clause.premise_index = None
+                clause.info.set("invalid")
+            else:
+                clause.premise_index = index
+                clause.info.set("p: " + str(index))
 
     def create_menu(self):
         # create the menus
@@ -87,5 +106,5 @@ class ResolutionApp():
 
 # start up the app
 if __name__ == "__main__":
-    app = ResolutionApp()
+    app = ResolutionGUI()
     app.start()

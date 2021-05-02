@@ -13,9 +13,16 @@ class EditListbox(Listbox):
 
         # bindings
         self.bind("<Double-1>", self.edit)
+        self.bind("<Button-1>", self.click)
 
     def get_index(self, event):
         return self.index("@{},{}".format(event.x, event.y))
+
+    def click(self, event):
+        index = self.get_index(event)
+        if self.app.selected_clause_id != None:
+            self.app.update_clause_premise(index)
+        
 
     # used to add an entry box and edit the list
     def edit(self, event):
