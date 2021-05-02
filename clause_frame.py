@@ -5,9 +5,13 @@ class ClauseFrame(ttk.Frame):
     def __init__(self, master=None, **kwargs):
         # useful variables
         self.text = StringVar()
+        self.id = None
+        
         self.parents = list()
         self.child = None
-        self.id = None
+
+        self.state = None
+        
         
         # initialize the frame
         super().__init__(master, **kwargs)

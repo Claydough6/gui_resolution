@@ -49,12 +49,21 @@ class ResolutionCanvas(Canvas):
                     this = self.frames[selected]
                     
                     if other in this.parents:
+                        # remove the other from this parents
                         this.parents.remove(other)
                         other.child = None
+                        # if no parents, update state
+                        if len(parents) == 0:
+                            self.state = None
+                        # undraw the line
                         self.remove_line(clicked, selected)
                     elif len(this.parents) < 2 and other.child == None:
+                        # update the parents
                         this.parents.append(other)
                         other.child = this
+                        # update the state to regualar clause
+                        self.state = "clause"
+                        # draw the line between the two
                         self.draw_line(clicked, selected)
 
             # b. if not, deselect the thing
