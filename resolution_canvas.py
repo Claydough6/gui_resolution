@@ -23,17 +23,6 @@ class ResolutionCanvas(Canvas):
         self.frames[id1] = frame
         frame.id = id1
 
-    # might be used later
-    '''
-    def add_bbox(self, id1):
-        # add the boundary box
-        t = 100
-        c = self.bbox(id1)
-        pos = (c[0]-t, c[1]-t, c[2]+t, c[3]+t)
-        print(pos)
-        self.create_rectangle(pos, fill="grey")
-    '''
-
     def click(self, event):
         # 1. get which frame is cicked
         clicked = None     # frame id if clicked
@@ -59,13 +48,12 @@ class ResolutionCanvas(Canvas):
                     other = self.frames[clicked]
                     this = self.frames[selected]
                     
-                    if len(this.parents) < 2:
-                        if other in this.parents:
-                            this.parents.remove(other)
-                            self.remove_line(clicked, selected)
-                        else:
-                            this.parents.append(other)
-                            self.draw_line(clicked, selected)
+                    if other in this.parents:
+                        this.parents.remove(other)
+                        self.remove_line(clicked, selected)
+                    elif len(this.parents) < 2:
+                        this.parents.append(other)
+                        self.draw_line(clicked, selected)
 
             # b. if not, deselect the thing
             else:

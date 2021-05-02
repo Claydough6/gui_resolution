@@ -2,7 +2,6 @@ from tkinter import *
 from tkinter import ttk
 from ttkthemes import ThemedTk
 
-from edit_listbox import EditListbox
 from resolution_canvas import ResolutionCanvas
 from statement_frame import StatementFrame
 
