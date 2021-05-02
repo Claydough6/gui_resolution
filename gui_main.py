@@ -24,11 +24,10 @@ class ResolutionApp():
 
         # create the main frames used
         self.resolution = ttk.Labelframe(self.root, text="Resolution:")
-        self.leftframe = StatementFrame(self.root)
-        self.leftframe.set_app(self)
+        self.leftframe = StatementFrame(self.root, self)
 
         # create the canvas to do the resolution on
-        self.canvas = ResolutionCanvas(self.resolution)
+        self.canvas = ResolutionCanvas(self.resolution, self)
         self.canvas.configure(bg='white')
 
         # setup a sizegrip item at the bottom right corner

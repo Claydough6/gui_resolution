@@ -4,19 +4,20 @@ from tkinter import ttk
 from clause_frame import ClauseFrame
 
 class ResolutionCanvas(Canvas):
-    def __init__(self, master, **kwargs):
+    def __init__(self, master, app, **kwargs):
         super().__init__(master, **kwargs)
         
         self.frames = dict()    # maps window id to frame
         self.lines = dict()     # maps frame id's to lines between them
         self.touchwidth = 20
+        self.app = app          # the parent app
         
         self.bind("<Shift-1>", self.add_statement)
         self.bind("<Button-1>", self.click)
 
     def add_statement(self, event):
         # create the frame
-        frame = ClauseFrame(relief="flat", padding=(5, 5))
+        frame = ClauseFrame(self.app, relief="flat", padding=(5, 5))
 
         # add the frame into the canvas at the click position
         id1 = self.create_window(event.x, event.y, window=frame, tags=("statement"))

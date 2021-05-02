@@ -4,12 +4,12 @@ from tkinter import ttk
 from edit_listbox import EditListbox
 
 class StatementFrame(ttk.Frame):
-    def __init__(self, master, **kwargs):
+    def __init__(self, master, app, **kwargs):
         # initialize the frame
         super().__init__(master, **kwargs)
 
         # useful variables
-        self.app = None # the parent app
+        self.app = app      # the parent app
 
         # initialize the sub frames
         self.statements = ttk.Labelframe(self, text="Statements:")
@@ -19,17 +19,13 @@ class StatementFrame(ttk.Frame):
         self.create_widgets()
         self.grid_widgets()
 
-    def set_app(self, app):
-        self.app = app
-
     def create_widgets(self):
         # create the list of premises
-        self.plist = EditListbox(self.statements, selectmode="browse")
+        self.plist = EditListbox(self.statements, self.app, selectmode="browse")
         self.plist.colorize()
-        self.plist.set_app(self.app)
 
         # create the conclusion list
-        self.clist = EditListbox(self.statements, selectmode="browse", height=1)
+        self.clist = EditListbox(self.statements, self.app, selectmode="browse", height=1)
         self.clist.insert(0, "Conclusion")
         self.clist.color = "IndianRed1"
         self.clist.colorize()

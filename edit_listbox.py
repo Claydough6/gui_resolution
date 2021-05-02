@@ -2,20 +2,17 @@ from tkinter import *
 
 # a listbox class to be used for premises and conclusions
 class EditListbox(Listbox):
-    def __init__(self, master, **kwargs):
+    def __init__(self, master, app, **kwargs):
         super().__init__(master, **kwargs)
 
         # variables
         self.edit_index = None
         self.color = None
         self.list = list()  # keeps the items
-        self.app = None     # the parent app
+        self.app = app      # the parent app
 
         # bindings
         self.bind("<Double-1>", self.edit)
-
-    def set_app(self, app):
-        self.app = app
 
     def get_index(self, event):
         return self.index("@{},{}".format(event.x, event.y))

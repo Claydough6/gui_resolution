@@ -2,16 +2,16 @@ from tkinter import *
 from tkinter import ttk
 
 class ClauseFrame(ttk.Frame):
-    def __init__(self, master=None, **kwargs):
+    def __init__(self, app, master=None, **kwargs):
         # useful variables
         self.text = StringVar()
         self.id = None
+        self.app = app
         
         self.parents = list()
         self.child = None
 
         self.state = None
-        
         
         # initialize the frame
         super().__init__(master, **kwargs)
