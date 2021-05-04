@@ -63,7 +63,7 @@ class ResolutionGUI():
                 clause.info.set("p: " + str(index))
             else:
                 clause.premise_index = -1
-                clause.info.set("p: c")
+                clause.info.set("c")
 
         # if the selected is a top level clause, update it
         elif clause.state == "topclause":
