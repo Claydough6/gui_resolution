@@ -13,12 +13,12 @@ class ResolutionCanvas(Canvas):
         self.app = app          # the parent app
         
         self.bind("<Shift-1>", self.add_statement)
-        self.bind("<Button-1>", self.click)
+        self.bind("<Button-1>", self.canvas_click)
         self.bind("<Key-Delete>", self.kill_clause)
 
     def add_statement(self, event):
         # create the frame
-        frame = ClauseFrame(self.app, relief="flat", padding=(5, 5))
+        frame = ClauseFrame(self.app, self, relief="flat", padding=(5, 5))
 
         # add the frame into the canvas at the click position
         id1 = self.create_window(event.x, event.y, window=frame, tags=("statement"))
@@ -56,7 +56,7 @@ class ResolutionCanvas(Canvas):
             for start, end in to_delete:
                 self.remove_line(start, end)
 
-    def click(self, event):
+    def canvas_click(self, event):
         # focus the keyboard as well
         self.focus_set()
         
@@ -76,6 +76,32 @@ class ResolutionCanvas(Canvas):
             selected = all_select[0]
 
         # if so, update the possible parent, etc
+        if selected != None:
+            # deselect the frame
+            self.deselect()     # removes selected tag
+            self.app.selected_clause_id = None
+
+        # 3. set the bindings if something is clicked
+        if clicked != None:
+            self.bind('<Motion>', self.move_frame)
+            self.bind('<ButtonRelease-1>', self.stop)
+
+            # update the clicked to be selected
+            self.addtag_withtag('selected', clicked)
+            self.app.selected_clause_id = clicked
+            self.frames[clicked].configure(relief="raised")
+
+    # used for when a frame is clicked directly
+    def frame_click(self, frame_id):
+        # see if something is selected
+        all_select = self.find_withtag("selected")
+        selected = None
+        if len(all_select) > 0:
+            selected = all_select[0]
+
+        # clicked is just the id of the frame
+        clicked = frame_id
+
         if selected != None:
             if clicked != None:
                 # if not the selected frame, update parents stuff
@@ -102,21 +128,22 @@ class ResolutionCanvas(Canvas):
                             this.state = "clause"
                             # draw the line between the two
                             self.draw_line(clicked, selected)
-
             # b. if not, deselect the thing
             else:
                 self.deselect()     # removes selected tag
                 self.app.selected_clause_id = None
 
         # 3. set the bindings if something is clicked
-        if clicked != None and (selected == None or selected == clicked):
-            self.bind('<Motion>', self.move_frame)
-            self.bind('<ButtonRelease-1>', self.stop)
-
-            # update the clicked to be selected
-            self.addtag_withtag('selected', clicked)
-            self.app.selected_clause_id = clicked
-            self.frames[clicked].configure(relief="raised")
+        if clicked != None:
+            if selected == None:
+                # update the clicked to be selected
+                self.addtag_withtag('selected', clicked)
+                self.app.selected_clause_id = clicked
+                self.frames[clicked].configure(relief="raised")
+            elif selected == clicked:
+                # set the selected off
+                self.deselect()     # removes selected tag
+                self.app.selected_clause_id = None
 
     def draw_line(self, start, end):
         # get the coordinates
