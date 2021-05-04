@@ -37,7 +37,7 @@ class StatementFrame(ttk.Frame):
         # create the buttons for the tools
         self.newPremise = ttk.Button(self.tools, text="New Premise", command=self.plist.add_premise)
         self.deletePremise = ttk.Button(self.tools, text="Delete Premise", command=self.plist.remove_premise)
-        self.verify = ttk.Button(self.tools, text="Verify Resolution")
+        self.verify = ttk.Button(self.tools, text="Verify Resolution", command=self.app.rules.verify_all)
         
     def grid_widgets(self):
         # grid the sets of widgets

@@ -4,6 +4,7 @@ from ttkthemes import ThemedTk
 
 from resolution_canvas import ResolutionCanvas
 from statement_frame import StatementFrame
+from resolution_engine import ResolutionEngine
 
 class ResolutionGUI():
     def __init__(self):
@@ -18,6 +19,9 @@ class ResolutionGUI():
         self.root.title("Graphical Resolution " + str(self.__version__))
         self.root.option_add('*tearOff', FALSE)  # so the menu doesn't tear
 
+        # create the rules for the application
+        self.rules = ResolutionEngine(self.root, self)
+
         # create the menus
         self.create_menu()
 
@@ -28,7 +32,7 @@ class ResolutionGUI():
         # create the canvas to do the resolution on
         self.canvas = ResolutionCanvas(self.resolution, self)
         self.canvas.configure(bg='white')
-
+        
         # setup a sizegrip item at the bottom right corner
         ttk.Sizegrip().grid(column=1, row=1, sticky=(S,E))
 
