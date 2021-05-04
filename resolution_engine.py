@@ -26,6 +26,42 @@ def remove_outer_parens(string):
         return string[1:len(string)-1]
     return string
 
+def convert(string, char1, char2):
+    str2 = ""
+    for letter in string:
+        if letter == char1:
+            str2 += char2
+        else:
+            str2 += letter
+    return str2
+
+def simplify_onestep(list1, list2):
+    modlist = list()
+    for item in list1:
+        if item not in modlist:
+            modlist.append(item)
+    for item in list2:
+        if item not in modlist:
+            modlist.append(item)
+
+    for item in modlist:
+        for item2 in modlist:
+            if item[0] == "~" and item2[0] != "~" and item[1:] == item2:
+                modlist.remove(item)
+                modlist.remove(item2)
+                return modlist
+
+    # if simplify does not "step," return nothing
+    return None
+
+def list_as_str(list1, splitter):
+    str2 = ""
+    for i in range(len(list1)):
+        str2 += str(list1[i])
+        if i + 1 != len(list1):
+            str2 += splitter
+    return str2
+
 class ResolutionEngine(ttk.Frame):
     def __init__(self, master, app, **kwargs):
         # initialize the frame
@@ -99,23 +135,23 @@ class ResolutionEngine(ttk.Frame):
         except: # leave this exception generic
             print("ERROR: premises or conclusion unsound")
             return
-        print("Premises and conclusion are sound: " + str(premises_check))
+        #print("Premises and conclusion are sound: " + str(premises_check))
         ## INCOMP! Need to display in GUI
 
-        if premises_check:
-            # if premises ARE sound, then the resolution (with inverted
-            # conclusion) should leave no claims "on the field"
-
-            print("We expect (1) all verified ClauseFrames, and (2) " +
-                  "a fully resolved canvas")
-        else:
-            # if premises do NOT match the conclusion, this doesn't mean
-            # the user screwed up! It just means the resolution should
-            # leave claims "on the field"
-            # however, there should be no errors or unverified claims here
-            # too!
-            print("We expect (1) all verified ClauseFrames, and (2) " + 
-                  "free attributes on the canvas")
+##        if premises_check:
+##            # if premises ARE sound, then the resolution (with inverted
+##            # conclusion) should leave no claims "on the field"
+##
+##            print("We expect (1) all verified ClauseFrames, and (2) " +
+##                  "a fully resolved canvas")
+##        else:
+##            # if premises do NOT match the conclusion, this doesn't mean
+##            # the user screwed up! It just means the resolution should
+##            # leave claims "on the field"
+##            # however, there should be no errors or unverified claims here
+##            # too!
+##            print("We expect (1) all verified ClauseFrames, and (2) " + 
+##                  "free attributes on the canvas")
 
         # great, now let's check the "top-level" clause-frames
         clause_dict = self.app.canvas.frames
@@ -135,23 +171,24 @@ class ResolutionEngine(ttk.Frame):
                 lower_lvl[key] = clause_dict[key]
 
         # great, now they're divided into two dicts
-        print(top_level)
-        print(lower_lvl)
+        #print(top_level)
+        #print(lower_lvl)
 
         # now that we're here, we can use the premises_OR and concl_OR
         # vars that we filled out at around step 1!
 
-        print(premises_OR)
-        print(concl_OR)
+        #print(premises_OR)
+        #print(concl_OR)
         
         # step 2 formally begins: all pieces of the premises and conclusion
         # must be represented as clauses!
 
         for key in top_level:
             part_str = str(top_level[key].text.get()).upper()
-            crop_str = remove_outer_parens(strip_all(part_str))
+            #convert(clause_dict[key], ",", "|")
+            crop_str = convert(remove_outer_parens(strip_all(part_str)), ",", "|")
             matches_with = str(top_level[key].premise_index)
-            print(part_str + " - " + matches_with)
+            #print(part_str + " - " + matches_with)
 
             try:
                 if int(matches_with) >= 0 and crop_str in premises_OR[matches_with]:
@@ -183,8 +220,74 @@ class ResolutionEngine(ttk.Frame):
         if end_early:
             return
 
-        print("debug: okay, great! all premises/conclusion represented!")
+        #print("debug: okay, great! all premises/conclusion represented!")
 
         # now we move onto step 3: verifying all lower-level claims
         # using the arrows to parent/child
         
+        for key in lower_lvl:
+            part_str = str(lower_lvl[key].text.get()).upper()
+            crop_str = convert(remove_outer_parens(strip_all(part_str)), ",", "|")
+
+            parent_lis = list()
+            for pid in lower_lvl[key].parents:
+                parent_lis.append(convert(remove_outer_parens(strip_all(
+                    clause_dict[pid].text.get())), ",", "|"))
+
+            #print(parent_lis)
+            # should be two items here that will be converted into a list
+            if len(parent_lis) != 2:
+                print("ERROR: clause '" + part_str + "' has " +
+                      str(len(parent_lis)) + " parent(s), but expected 2")
+                return
+
+            # first, analyze the parents
+            pl1 = parent_lis[0].split("|")
+            pl2 = parent_lis[1].split("|")
+
+            expected = list_as_str(simplify_onestep(pl1, pl2), "|")
+            if expected is not None:
+                if crop_str != expected:
+                    print("ERROR: clause '" + part_str + "' is not a correct " +
+                          "derivation from its parents")
+                    return
+            else:
+                print("ERROR: clause '" + part_str + "' is not within one " +
+                      "derivation step from its parents")
+                return
+
+            #if lower_lvl[key].child is not None:
+                #print("child id? = " + str(lower_lvl[key].child))
+                # it is not a child id, it's a whole child!!
+                #child = convert(remove_outer_parens(strip_all(
+                #    lower_lvl[key].child.text.get())),
+                #                ",", "|")
+                #print(child)
+
+            num_final_steps = 0
+            if lower_lvl[key].child is None:
+                # then this is the final step!
+                num_final_steps += 1
+                if num_final_steps != 1:
+                    print("ERROR: there are at least " + str(num_final_steps)
+                          + " 'final steps' (no child clauses) in the "
+                          + "derivation")
+                    return
+
+                # now we harken back to premises_check to see what we expect
+                if premises_check:
+                    if crop_str != "":
+                        print("ERROR: the premises and conclusion are valid, "
+                              + "but the derivation does not completely "
+                              + "resolve")
+                        return
+                else:
+                    if crop_str == "":
+                        print("ERROR: the premises and conclusion are invalid, "
+                              + "but the derivation resolves completely")
+                        return
+
+                # if we have made it this far, we are actually done.
+
+        print("Successful resolution!")
+        return
