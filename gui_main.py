@@ -91,7 +91,7 @@ class ResolutionGUI():
         self.menubar.add_cascade(label="File", menu=self.filemenu)
         self.menubar.add_command(label="Help", command=self.get_help)
 
-        self.filemenu.add_command(label='Open')
+        self.filemenu.add_command(label='Open', command=self.open)
         self.filemenu.add_command(label='Save', command=self.save)
         self.filemenu.add_command(label='Save As', command=self.saveas)
 
@@ -111,6 +111,20 @@ class ResolutionGUI():
     def saveas(self, *args):
         self.filename = filedialog.asksaveasfilename()
         self.save()
+
+    def open(self, *args):
+        # see if we should save first?
+
+        # get the file
+        self.filename = filedialog.askopenfilename()
+
+        savestr = ""
+        with open(self.filename, 'r') as f:
+            savestr = f.read()
+
+        # populate the app with the file info
+        self.canvas.open(savestr)
+        self.leftframe.open(savestr)
 
     # grid everything into the app
     def grid(self):

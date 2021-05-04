@@ -64,4 +64,27 @@ class StatementFrame(ttk.Frame):
         string += self.clist.get_save_string()
         string += "\n"
         return string
+
+    def open(self, string):
+        s = string.split('\n')
+
+        # do the conclusion first
+        start, end = 0, 0
+        for i in range(len(s)):
+            if "<conclusion>" in s[i]:
+                start = i+1
+            if "</conclusion>" in s[i]:
+                end = i
+                break
+        self.clist.update(s[start:end])
+
+        # now do the premises
+        start, end = 0, 0
+        for i in range(len(s)):
+            if "<premise>" in s[i]:
+                start = i+1
+            if "</premise>" in s[i]:
+                end = i
+                break
+        self.plist.update(s[start:end])
         

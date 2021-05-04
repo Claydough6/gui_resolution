@@ -79,8 +79,11 @@ class EditListbox(Listbox):
                 self.itemconfigure(i, background='white')   
 
     # used to add a new premise to the list
-    def add_premise(self):
-        self.insert("end", "New Premise")
+    def add_premise(self, *args, prem=None):
+        if prem:
+            self.insert("end", prem)
+        else:
+            self.insert("end", "New Premise")
         self.colorize()
 
     # used to get rid of a premise clicked on
@@ -99,6 +102,14 @@ class EditListbox(Listbox):
             string += text + "\n"
         string += "<\premise>\n"
         return string
-            
+
+    def update(self, s):
+        # clear this first
+        for i in range(self.size()):
+            self.delete(i)
+
+        # now add each premise
+        for p in s:
+            self.add_premise(prem=p)
             
         

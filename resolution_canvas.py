@@ -223,6 +223,12 @@ class ResolutionCanvas(Canvas):
                 # get the premise index
                 string += "<prem>{}</prem>\n".format(frame.premise_index)
 
+                # get the child info
+                child = frame.child.id
+                if child == None:
+                    child = ''
+                string += "<child>{}</child>\n".format(child)
+
                 # end it
                 string += "</top-clause>\n"
                 
@@ -240,7 +246,7 @@ class ResolutionCanvas(Canvas):
                 string += "<pos>{},{}</pos>\n".format(x, y)
 
                 # get the sentance
-                string+= "<sen>{}</sen>\n".format(frame.text.get())
+                string += "<sen>{}</sen>\n".format(frame.text.get())
 
                 # get the premise index
                 ps = ""
@@ -248,11 +254,148 @@ class ResolutionCanvas(Canvas):
                     ps += str(item) + ','
                 string += "<parents>{}</parents>\n".format(ps[:-1])
 
+                # get the child info
+                child = frame.child
+                if child == None:
+                    child = ''
+                string += "<child>{}</child>\n".format(child)
+
                 # end it
                 string += "</clause>\n"
             string += "\n"
 
         return string
-            
+
+    def open(self, string):
+        # first clear the canvas
+        self.delete_frames()
+        
+        s = string.split('\n')
+
+        # do each top level frame first
+        j = 0
+        while j < len(s):
+            start, end = 0, 0
+            for i in range(j, len(s)):
+                if "<top-clause>" in s[i]:
+                    start = i+1
+                if "</top-clause>" in s[i]:
+                    end = i
+                    j = i
+                    break
+            if start != end:
+                self.update_top(s[start:end])
+
+        # do each top level frame first
+        j = 0
+        while j < len(s):
+            start, end = 0, 0
+            for i in range(j, len(s)):
+                if "<clause>" in s[i]:
+                    start = i+1
+                if "</clause>" in s[i]:
+                    end = i
+                    j = i
+                    break
+            if start != end:
+                self.update_clause(s[start:end])
+
+        # draw the arrows
+        #self.update_arrows(self)
+
+    def delete_frames(self, *args):
+        # do the frames
+        for fid in self.find_withtag("statement"):
+            self.delete(fid)
+        # do the arrows
+        for line in self.lines.values():
+            self.delete(line)
+
+    def update_clause(self, s):
+        # get the id
+        print(s[0])
+        id1 = int(s[0][4:][:-5])
+
+        # get the position
+        pos = s[1][5:][:-6]
+        x, y = pos.split(',')
+        x = float(x)
+        y = float(y)
+
+        # get the sentance
+        sent = s[2][5:][:-6]
+
+        # get the parents
+        p = s[3][9:][:-10]
+        parents = p.split(',')
+
+        # get the child id
+        child = s[4][8:][:-9]
+        if child != '':
+            child = int(child)
+        else:
+            child = None
+
+        # create the frame
+        frame = ClauseFrame(self.app, self, relief="flat", padding=(5, 5))
+
+        # add the frame into the canvas at the click position
+        # note the arrows are drawn later
+        id2 = self.create_window(x, y, window=frame, tags=("statement"))
+        self.frames[id1] = frame
+        frame.id = id2
+
+        if id1 != id2:
+            print('PROBLEM')
+
+        # update the frame
+        frame.parents = parents
+        if child != None:
+            frame.child = child
+        frame.state = "clause"
+
+    def update_top(self, s):
+        # get the id
+        print(s[0])
+        id1 = int(s[0][4:][:-5])
+
+        # get the position
+        pos = s[1][5:][:-6]
+        x, y = pos.split(',')
+        x = float(x)
+        y = float(y)
+
+        # get the sentance
+        sent = s[2][5:][:-6]
+
+        # get the premise id
+        pid = int(s[3][6:][:-7])
+
+        # get the child id
+        child = s[4][8:][:-9]
+        if child != '':
+            child = int(child)
+        else:
+            child = None
+
+        # create the frame
+        frame = ClauseFrame(self.app, self, relief="flat", padding=(5, 5))
+
+        # add the frame into the canvas at the click position
+        # note the arrows are drawn later
+        id2 = self.create_window(x, y, window=frame, tags=("statement"))
+        self.frames[id1] = frame
+        frame.id = id2
+
+        if id1 != id2:
+            print('PROBLEM')
+
+        # update the frame
+        frame.premise_index = pid
+        if child != None:
+            frame.child = child
+        frame.state = "topclause"
+        
+    #def update_arrows(self):
         
         
