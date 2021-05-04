@@ -5,6 +5,7 @@ from ttkthemes import ThemedTk
 from resolution_canvas import ResolutionCanvas
 from statement_frame import StatementFrame
 from resolution_engine import ResolutionEngine
+from info_window import InfoWindow
 
 class ResolutionGUI():
     def __init__(self):
@@ -42,13 +43,11 @@ class ResolutionGUI():
 
     # used to display the help menu
     def get_help(self, *args):
-        help_window = Toplevel(self.root)
-        help_window.title("Help Window")
-        help_text = "Error..."
-        with open('help.txt', 'r') as f:
-            help_text = f.read()
-        label = ttk.Label(help_window, text=help_text)
-        label.grid(padx=10, pady=10)
+        help_window = InfoWindow(self.root, "Help Window", "help.txt", file=True)
+
+    # used to display an error to the user
+    def show_error(self, error_text):
+        error_window = InfoWindow(self.root, "Error Window!", error_text)
 
     def update_clause_premise(self, index, conclusion=False):
         # get the clause frame that is selected
