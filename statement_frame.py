@@ -28,6 +28,7 @@ class StatementFrame(ttk.Frame):
         self.clist = EditListbox(self.statements, self.app, selectmode="browse", height=1)
         self.clist.insert(0, "Conclusion")
         self.clist.color = "IndianRed1"
+        self.clist.conclusion = True
         self.clist.colorize()
 
         # create the scrollbar

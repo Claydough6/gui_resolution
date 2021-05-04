@@ -2,7 +2,7 @@ from tkinter import *
 from tkinter import ttk
 
 class ClauseFrame(ttk.Frame):
-    def __init__(self, app, master=None, **kwargs):
+    def __init__(self, app, canvas, master=None, **kwargs):
         # useful variables
         self.text = StringVar()
         self.info = StringVar()
@@ -10,6 +10,7 @@ class ClauseFrame(ttk.Frame):
         
         self.id = None
         self.app = app
+        self.canvas = canvas
         
         self.parents = list()
         self.child = None
@@ -31,3 +32,11 @@ class ClauseFrame(ttk.Frame):
         # make and grid the check button in the frame
         self.check = ttk.Button(self, text="✓", width=3)
         self.check.grid(row=1, sticky=(E))
+
+        # bindings
+        self.bind("<Button-1>", self.clicked)
+        self.valid.bind("<Button-1>", self.clicked)
+
+    def clicked(self, event):
+        self.canvas.frame_click(self.id)
+
