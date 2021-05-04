@@ -8,6 +8,7 @@ class EditListbox(Listbox):
         # variables
         self.edit_index = None
         self.color = None
+        self.conclusion = False
         self.list = list()  # keeps the items
         self.app = app      # the parent app
 
@@ -21,7 +22,7 @@ class EditListbox(Listbox):
     def click(self, event):
         index = self.get_index(event)
         if self.app.selected_clause_id != None:
-            self.app.update_clause_premise(index)
+            self.app.update_clause_premise(index, self.conclusion)
         
 
     # used to add an entry box and edit the list

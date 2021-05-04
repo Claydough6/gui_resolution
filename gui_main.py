@@ -46,25 +46,37 @@ class ResolutionGUI():
         label = ttk.Label(help_window, text=help_text)
         label.grid(padx=10, pady=10)
 
-    def update_clause_premise(self, index):
+    def update_clause_premise(self, index, conclusion=False):
         # get the clause frame that is selected
         clause = self.canvas.frames[self.selected_clause_id]
 
         # if the selected is in a blank state, set the premise
         if clause.state == None:
             clause.state = "topclause"
-            clause.premise_index = index
-            clause.info.set("p: " + str(index))
+            # deal with conclusion vs premise list
+            if not conclusion:
+                clause.premise_index = index
+                clause.info.set("p: " + str(index))
+            else:
+                clause.premise_index = -1
+                clause.info.set("p: c")
 
         # if the selected is a top level clause, update it
         elif clause.state == "topclause":
+            if conclusion:
+                index = -1
             if clause.premise_index == index:
                 clause.state = None
                 clause.premise_index = None
                 clause.info.set("invalid")
             else:
-                clause.premise_index = index
-                clause.info.set("p: " + str(index))
+                # deal with conclusion vs premise list
+                if not conclusion:
+                    clause.premise_index = index
+                    clause.info.set("p: " + str(index))
+                else:
+                    clause.premise_index = -1
+                    clause.info.set("p: c")
 
     def create_menu(self):
         # create the menus
