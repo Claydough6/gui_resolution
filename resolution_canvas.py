@@ -199,5 +199,60 @@ class ResolutionCanvas(Canvas):
             self.frames[frame].configure(relief="flat")
         
         self.dtag("selected")
+
+    def get_save_string(self):
+        string = ""
+        for fid in self.find_withtag("statement"):
+            frame = self.frames[fid]
+            if frame.state == "topclause":
+                # get the type
+                string += "<top-clause>\n"
+
+                # get the id
+                string += "<id>{}</id>\n".format(frame.id)
+
+                # get the position
+                bbox = self.bbox(fid)
+                x = (bbox[0] + bbox[2]) / 2
+                y = (bbox[1] + bbox[3]) / 2
+                string += "<pos>{},{}</pos>\n".format(x, y)
+
+                # get the sentance
+                string+= "<sen>{}</sen>\n".format(frame.text.get())
+
+                # get the premise index
+                string += "<prem>{}</prem>\n".format(frame.premise_index)
+
+                # end it
+                string += "</top-clause>\n"
+                
+            elif frame.state == "clause":
+                # get the type
+                string += "<clause>\n"
+
+                # get the id
+                string += "<id>{}</id>\n".format(frame.id)
+
+                # get the position
+                bbox = self.bbox(fid)
+                x = (bbox[0] + bbox[2]) / 2
+                y = (bbox[1] + bbox[3]) / 2
+                string += "<pos>{},{}</pos>\n".format(x, y)
+
+                # get the sentance
+                string+= "<sen>{}</sen>\n".format(frame.text.get())
+
+                # get the premise index
+                ps = ""
+                for item in frame.parents:
+                    ps += str(item) + ','
+                string += "<parents>{}</parents>\n".format(ps[:-1])
+
+                # end it
+                string += "</clause>\n"
+            string += "\n"
+
+        return string
+            
         
         

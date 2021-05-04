@@ -91,4 +91,14 @@ class EditListbox(Listbox):
         index = select[0]
         self.delete(index)
         self.colorize()
+
+    def get_save_string(self):
+        string = "<premise>\n"
+        for i in range(self.size()):
+            text = self.get(i)
+            string += text + "\n"
+        string += "<\premise>\n"
+        return string
+            
+            
         

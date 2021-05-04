@@ -1,0 +1,22 @@
+<premise>
+P | Q
+A & B
+<\premise>
+
+<conclusion>
+~P
+</conclusion>
+
+<top-clause>
+<id>1<\id>
+<pos>120,35<\pos>
+<sen>{ P, Q }<\sen>
+<prem>1<\prem>
+<\top-clause>
+
+<clause>
+<id>1<\id>
+<pos>120,35<\pos>
+<sen>{ P, Q }<\sen>
+<parents>3,4<\parents>
+<\clause>
