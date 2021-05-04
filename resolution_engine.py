@@ -50,7 +50,7 @@ class ResolutionEngine(ttk.Frame):
         for i in range(premise_listbox.size()):
             #print("Premise " + str(i) + ": " + str(premise_listbox.get(i)))
             try:
-                this_exp = pyp.expr(premise_listbox.get(i))
+                this_exp = pyp.expr(premise_listbox.get(i).upper())
 
                 pstr = str(i)
                 this_lis = list()
@@ -59,7 +59,7 @@ class ResolutionEngine(ttk.Frame):
                     if paren_even(part):
                         #premises_OR.append(remove_outer_parens(part))
                         #premises_OR[pstr] = remove_outer_parens(part)
-                        this_lis.append(remove_outer_parens(part))
+                        this_lis.append(remove_outer_parens(part).upper())
                     else:
                         print("ERROR: premise '" + str(premise_listbox.get(i))
                               + "' is not in CNF!")
@@ -77,12 +77,12 @@ class ResolutionEngine(ttk.Frame):
         try:
             if str(conclusion_listbox.get(0)) == "Conclusion":
                 raise pyparse.ParseException("conclusion")
-            concl_exp = pyp.expr(conclusion_listbox.get(0))
+            concl_exp = pyp.expr(conclusion_listbox.get(0).upper())
             concl_neg = str(pyp.simplify(~concl_exp))
             
             for part in concl_neg.split("&"): # NEGATE conclusion parts!
                 if paren_even(strip_all(part)):
-                    concl_OR.append(remove_outer_parens(strip_all(part)))
+                    concl_OR.append(remove_outer_parens(strip_all(part)).upper())
                 else:
                     print("ERROR: conclusion does not validate to CNF!")
                     return
@@ -148,7 +148,7 @@ class ResolutionEngine(ttk.Frame):
         # must be represented as clauses!
 
         for key in top_level:
-            part_str = str(top_level[key].text.get())
+            part_str = str(top_level[key].text.get()).upper()
             crop_str = remove_outer_parens(strip_all(part_str))
             matches_with = str(top_level[key].premise_index)
             print(part_str + " - " + matches_with)
