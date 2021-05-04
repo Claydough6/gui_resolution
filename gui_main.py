@@ -40,11 +40,20 @@ class ResolutionGUI():
     def get_help(self, *args):
         help_window = Toplevel(self.root)
         help_window.title("Help Window")
+        help_window.grid_columnconfigure(0, weight=1)
+        help_window.grid_rowconfigure(0, weight=1)
+
+        s = ttk.Sizegrip(help_window)
+        s.grid(column=1, row=1, sticky=(S,E))
+        
         help_text = "Error..."
         with open('help.txt', 'r') as f:
             help_text = f.read()
-        label = ttk.Label(help_window, text=help_text)
-        label.grid(padx=10, pady=10)
+            
+        label = Text(help_window, wrap="word")
+        label.insert("1.0", help_text)
+        label.configure(state="disabled")
+        label.grid(row=0, column=0, padx=10, pady=10, sticky=(N,S,E,W))
 
     def update_clause_premise(self, index, conclusion=False):
         # get the clause frame that is selected
