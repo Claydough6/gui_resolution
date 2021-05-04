@@ -145,52 +145,6 @@ class ResolutionCanvas(Canvas):
                 self.deselect()     # removes selected tag
                 self.app.selected_clause_id = None
 
-    # does all of the logic for parent/child relationships
-    # keeps track of which frame is selected
-    # also deals with setting motion tags
-    def update_clauses(self, clicked, selected):
-        if selected != None:
-            if clicked != None:
-                # if not the selected frame, update parents stuff
-                if clicked != selected:
-                    # update the parent
-                    other = self.frames[clicked]
-                    this = self.frames[selected]
-                    # make sure the clause frame is not a top level clause
-                    if this.state != "topclause":
-                        if clicked in this.parents:
-                            # remove the other from this parents
-                            this.parents.remove(clicked)
-                            other.child = None
-                            # if no parents, update state
-                            if len(this.parents) == 0:
-                                this.state = None
-                            # undraw the line
-                            self.remove_line(clicked, selected)
-                        elif len(this.parents) < 2 and other.child == None:
-                            # update the parents
-                            this.parents.append(clicked)
-                            other.child = this
-                            # update the state to regualar clause
-                            this.state = "clause"
-                            # draw the line between the two
-                            self.draw_line(clicked, selected)
-
-            # b. if not, deselect the thing
-            else:
-                self.deselect()     # removes selected tag
-                self.app.selected_clause_id = None
-
-        # 3. set the bindings if something is clicked
-        if clicked != None and (selected == None or selected == clicked):
-            self.bind('<Motion>', self.move_frame)
-            self.bind('<ButtonRelease-1>', self.stop)
-
-            # update the clicked to be selected
-            self.addtag_withtag('selected', clicked)
-            self.app.selected_clause_id = clicked
-            self.frames[clicked].configure(relief="raised")
-
     def draw_line(self, start, end):
         # get the coordinates
         sbox = self.bbox(start)
