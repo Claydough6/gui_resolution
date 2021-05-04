@@ -56,4 +56,12 @@ class StatementFrame(ttk.Frame):
         # set the column and row configurations
         self.statements.grid_columnconfigure(0, weight=1)
         self.statements.grid_rowconfigure(0, weight=1)
+
+    def get_save_string(self):
+        string = ""
+        string += self.plist.get_save_string()
+        string += "\n"
+        string += self.clist.get_save_string()
+        string += "\n"
+        return string
         

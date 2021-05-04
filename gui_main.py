@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import ttk
 from ttkthemes import ThemedTk
+from tkinter import filedialog
 
 from resolution_canvas import ResolutionCanvas
 from statement_frame import StatementFrame
@@ -11,6 +12,7 @@ class ResolutionGUI():
     def __init__(self):
         # useful variables
         self.__version__ = 0.3
+        self.filename = None
 
         # used to help transfer between subapps
         self.selected_clause_id = None
@@ -90,10 +92,25 @@ class ResolutionGUI():
         self.menubar.add_command(label="Help", command=self.get_help)
 
         self.filemenu.add_command(label='Open')
-        self.filemenu.add_command(label='Save')
-        self.filemenu.add_command(label='Save As')
+        self.filemenu.add_command(label='Save', command=self.save)
+        self.filemenu.add_command(label='Save As', command=self.saveas)
 
         self.root.configure(menu=self.menubar)
+
+    def save(self, *args):
+        #InfoWindow(self.root, "Save Window!", self.canvas.get_save_string())
+        if not self.filename:
+            self.saveas()
+        else:
+            savestr = ""
+            savestr += self.leftframe.get_save_string()
+            savestr += self.canvas.get_save_string()
+            with open(self.filename, 'w') as f:
+                f.write(savestr)
+
+    def saveas(self, *args):
+        self.filename = filedialog.asksaveasfilename()
+        self.save()
 
     # grid everything into the app
     def grid(self):
