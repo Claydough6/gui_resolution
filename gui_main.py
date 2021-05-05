@@ -11,7 +11,7 @@ from info_window import InfoWindow
 class ResolutionGUI():
     def __init__(self):
         # useful variables
-        self.__version__ = 0.3
+        self.__version__ = 1.0
         self.filename = None
 
         # used to help transfer between subapps
