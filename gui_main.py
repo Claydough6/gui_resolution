@@ -51,6 +51,10 @@ class ResolutionGUI():
     def show_error(self, error_text):
         error_window = InfoWindow(self.root, "Error Window!", error_text)
 
+    # used to display an successful resolution to the user
+    def show_success(self, success_text):
+        success_window = InfoWindow(self.root, "Success Window!", success_text)
+
     def update_clause_premise(self, index, conclusion=False):
         # get the clause frame that is selected
         clause = self.canvas.frames[self.selected_clause_id]
@@ -92,13 +96,12 @@ class ResolutionGUI():
         self.menubar.add_command(label="Help", command=self.get_help)
 
         self.filemenu.add_command(label='Open')
-        self.filemenu.add_command(label='Save', command=self.save)
-        self.filemenu.add_command(label='Save As', command=self.saveas)
+        self.filemenu.add_command(label='Save')
+        self.filemenu.add_command(label='Save As')
 
         self.root.configure(menu=self.menubar)
 
     def save(self, *args):
-        #InfoWindow(self.root, "Save Window!", self.canvas.get_save_string())
         if not self.filename:
             self.saveas()
         else:
@@ -131,6 +134,10 @@ class ResolutionGUI():
         self.leftframe.grid_columnconfigure(0, weight=1)
         self.leftframe.grid_rowconfigure(0, weight=5)
         self.leftframe.grid_rowconfigure(1, weight=1)
+
+    def success(self, text):
+        self.show_success(text)
+        self.canvas.success()
 
     def start(self):
         self.root.mainloop()

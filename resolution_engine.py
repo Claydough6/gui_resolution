@@ -71,6 +71,9 @@ class ResolutionEngine(ttk.Frame):
         self.app = app      # the parent app
 
     def verify_all(self):
+        # used to return errors to user
+        errorstr = ""
+        
         premise_listbox = self.app.leftframe.plist
         conclusion_listbox = self.app.leftframe.clist
         plist_exps = list()
@@ -80,7 +83,8 @@ class ResolutionEngine(ttk.Frame):
 
         # parse all premises
         if premise_listbox.size() < 1:
-            print("ERROR: no premises")
+            errorstr += "ERROR: no premises\n"
+            self.app.show_error(errorstr)
             return
         
         for i in range(premise_listbox.size()):
@@ -97,16 +101,18 @@ class ResolutionEngine(ttk.Frame):
                         #premises_OR[pstr] = remove_outer_parens(part)
                         this_lis.append(remove_outer_parens(part).upper())
                     else:
-                        print("ERROR: premise '" + str(premise_listbox.get(i))
-                              + "' is not in CNF!")
+                        errorstr += str("ERROR: premise '" + str(premise_listbox.get(i))
+                              + "' is not in CNF!\n")
+                        self.app.show_error(errorstr)
                         return
                 premises_OR[pstr] = this_lis
                 
                 plist_exps.append(this_exp)
             except pyparse.ParseException:
-                print("ERROR: could not parse '" + str(premise_listbox.get(i))
-                      + "'")
+                errorstr += str("ERROR: could not parse '" + str(premise_listbox.get(i))
+                      + "'\n")
                 ## INCOMP! Need to show verification failed in GUI
+                self.app.show_error(errorstr)
                 return
 
         # parse the conclusion
@@ -120,11 +126,13 @@ class ResolutionEngine(ttk.Frame):
                 if paren_even(strip_all(part)):
                     concl_OR.append(remove_outer_parens(strip_all(part)).upper())
                 else:
-                    print("ERROR: conclusion does not validate to CNF!")
+                    errorstr += "ERROR: conclusion does not validate to CNF!\n"
+                    self.app.show_error(errorstr)
                     return
         except pyparse.ParseException:
-            print("ERROR: could not parse '" + str(conclusion_listbox.get(0))
-                  + "'")
+            errorstr += str("ERROR: could not parse '" + str(conclusion_listbox.get(0))
+                  + "'\n")
+            self.app.show_error(errorstr)
             return
 
         # You might be wondering, shouldn't we invert the conclusion?
@@ -133,7 +141,8 @@ class ResolutionEngine(ttk.Frame):
         try:
             premises_check = pyp.proves(plist_exps, concl_exp)
         except: # leave this exception generic
-            print("ERROR: premises or conclusion unsound")
+            errorstr += "ERROR: premises or conclusion unsound\n"
+            self.app.show_error(errorstr)
             return
         #print("Premises and conclusion are sound: " + str(premises_check))
         ## INCOMP! Need to display in GUI
@@ -200,12 +209,14 @@ class ResolutionEngine(ttk.Frame):
                     concl_OR.remove(crop_str)
                 else:
                     # error triggered if clause is tagging the wrong premise
-                    print("ERROR: clause '" + part_str + "' does not match "
-                          + "the premise tagged")
+                    errorstr += str("ERROR: clause '" + part_str + "' does not match "
+                          + "the premise tagged\n")
+                    self.app.show_error(errorstr)
                     return
             except KeyError:
-                print("ERROR: clause '" + part_str + "' is pointing "
-                      + "to a nonexistent premise")
+                errorstr += str("ERROR: clause '" + part_str + "' is pointing "
+                      + "to a nonexistent premise\n")
+                self.app.show_error(errorstr)
                 return
 
         # now we check to see if we *missed* any premises
@@ -213,11 +224,12 @@ class ResolutionEngine(ttk.Frame):
         for key in premises_OR:
             if len(premises_OR[key]) > 0:
                 end_early = True
-                print("ERROR: premise " + str(key) + " not represented")
+                errorstr += "ERROR: premise " + str(key) + " not represented\n"
         if len(concl_OR) > 0:
             end_early = True
-            print("ERROR: conclusion not represented")
+            errorstr += "ERROR: conclusion not represented\n"
         if end_early:
+            self.app.show_error(errorstr)
             return
 
         #print("debug: okay, great! all premises/conclusion represented!")
@@ -237,8 +249,9 @@ class ResolutionEngine(ttk.Frame):
             #print(parent_lis)
             # should be two items here that will be converted into a list
             if len(parent_lis) != 2:
-                print("ERROR: clause '" + part_str + "' has " +
-                      str(len(parent_lis)) + " parent(s), but expected 2")
+                errorstr += str("ERROR: clause '" + part_str + "' has " +
+                      str(len(parent_lis)) + " parent(s), but expected 2\n")
+                self.app.show_error(errorstr)
                 return
 
             # first, analyze the parents
@@ -248,12 +261,14 @@ class ResolutionEngine(ttk.Frame):
             expected = list_as_str(simplify_onestep(pl1, pl2), "|")
             if expected is not None:
                 if crop_str != expected:
-                    print("ERROR: clause '" + part_str + "' is not a correct " +
-                          "derivation from its parents")
+                    errorstr += str("ERROR: clause '" + part_str + "' is not a correct " +
+                          "derivation from its parents\n")
+                    self.app.show_error(errorstr)
                     return
             else:
-                print("ERROR: clause '" + part_str + "' is not within one " +
-                      "derivation step from its parents")
+                errorstr += str("ERROR: clause '" + part_str + "' is not within one " +
+                      "derivation step from its parents\n")
+                self.app.show_error(errorstr)
                 return
 
             #if lower_lvl[key].child is not None:
@@ -269,25 +284,28 @@ class ResolutionEngine(ttk.Frame):
                 # then this is the final step!
                 num_final_steps += 1
                 if num_final_steps != 1:
-                    print("ERROR: there are at least " + str(num_final_steps)
+                    errorstr += str("ERROR: there are at least " + str(num_final_steps)
                           + " 'final steps' (no child clauses) in the "
-                          + "derivation")
+                          + "derivation\n")
+                    self.app.show_error(errorstr)
                     return
 
                 # now we harken back to premises_check to see what we expect
                 if premises_check:
                     if crop_str != "":
-                        print("ERROR: the premises and conclusion are valid, "
+                        errorstr += str("ERROR: the premises and conclusion are valid, "
                               + "but the derivation does not completely "
-                              + "resolve")
+                              + "resolve\n")
+                        self.app.show_error(errorstr)
                         return
                 else:
                     if crop_str == "":
-                        print("ERROR: the premises and conclusion are invalid, "
-                              + "but the derivation resolves completely")
+                        errorstr += str("ERROR: the premises and conclusion are invalid, "
+                              + "but the derivation resolves completely\n")
+                        self.app.show_error(errorstr)
                         return
 
                 # if we have made it this far, we are actually done.
 
-        print("Successful resolution!")
+        self.app.success("Successful resolution!")
         return

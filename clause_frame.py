@@ -27,11 +27,7 @@ class ClauseFrame(ttk.Frame):
 
         # make and grid the valid text in the frame
         self.valid = ttk.Label(self, textvariable=self.info)
-        self.valid.grid(row=1, sticky=(W))
-
-        # make and grid the check button in the frame
-        self.check = ttk.Button(self, text="✓", width=3)
-        self.check.grid(row=1, sticky=(E))
+        self.valid.grid(row=1, sticky=(W,E))
 
         # bindings
         self.bind("<Button-1>", self.clicked)

@@ -253,6 +253,10 @@ class ResolutionCanvas(Canvas):
             string += "\n"
 
         return string
+
+    def success(self):
+        for frame in self.frames.values():
+            frame.info.set("valid!")
             
         
         
