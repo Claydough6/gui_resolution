@@ -3,6 +3,11 @@ Logical resolution application for Computability and Logic RPI course final proj
 
 Authors: Clay Bell and Kevin Khaghani
 
+## Installing and Use:
+To install the package clone the github main directory. Then cd into the 'resolution_gui' top level folder and run: 'pip install .'. 
+The app can then be run by calling in the interpreter: 'import resolution_gui'.
+Additionally the '__init__.py' file can be run by double clicking on it in the resolution_gui folder to start up the app.
+
 ## How to Use:
 Note: this is found in help.txt as well. It is displayed when the help menu is clicked in the app.
 
