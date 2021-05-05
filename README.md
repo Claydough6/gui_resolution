@@ -6,6 +6,8 @@ Authors: Clay Bell and Kevin Khaghani
 ## Installing and Use:
 To install the package clone the github main directory. Then cd into the 'resolution_gui' folder and run the 'resolution_gui.py' file!
 
+Note: to run the application the modules listed in 'requirements.txt' must be installed. You can use 'pip install module' to do so.
+
 ## How to Use:
 Note: this is found in help.txt as well. It is displayed when the help menu is clicked in the app.
 
