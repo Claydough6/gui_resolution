@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter import ttk
 
-from edit_listbox import EditListbox
+from .edit_listbox import EditListbox
 
 class StatementFrame(ttk.Frame):
     def __init__(self, master, app, **kwargs):

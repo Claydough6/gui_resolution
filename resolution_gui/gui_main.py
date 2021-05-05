@@ -3,10 +3,10 @@ from tkinter import ttk
 from ttkthemes import ThemedTk
 from tkinter import filedialog
 
-from resolution_canvas import ResolutionCanvas
-from statement_frame import StatementFrame
-from resolution_engine import ResolutionEngine
-from info_window import InfoWindow
+from .resolution_canvas import ResolutionCanvas
+from .statement_frame import StatementFrame
+from .resolution_engine import ResolutionEngine
+from .info_window import InfoWindow
 
 class ResolutionGUI():
     def __init__(self):

@@ -9,8 +9,8 @@ setup(name="resolution_gui",
       license="MIT",
       packages=["resolution_gui"],
       install_requires=[
-          "tkinter",
           "ttkthemes",
           "pyprover",
+          "pyparsing",
       ],
       zip_safe=False)
