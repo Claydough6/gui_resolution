@@ -1,7 +1,7 @@
 # gui_resolution
 Standalone logical resolution application for Computability and Logic RPI course final project.
 
-# How to Use:
+## How to Use:
 Note: this is found in help.txt as well. It is displayed when the help menu is clicked in the app.
 
 How to use the application:
