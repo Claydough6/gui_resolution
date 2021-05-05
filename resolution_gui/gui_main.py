@@ -1,6 +1,5 @@
 from tkinter import *
 from tkinter import ttk
-from ttkthemes import ThemedTk
 from tkinter import filedialog
 
 from resolution_canvas import ResolutionCanvas
@@ -18,7 +17,7 @@ class ResolutionGUI():
         self.selected_clause_id = None
 
         # create the root window
-        self.root = ThemedTk()
+        self.root = Tk()
         self.root.title("Graphical Resolution " + str(self.__version__))
         self.root.option_add('*tearOff', FALSE)  # so the menu doesn't tear
 
