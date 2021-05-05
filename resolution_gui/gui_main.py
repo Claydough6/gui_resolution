@@ -142,8 +142,3 @@ class ResolutionGUI():
     def start(self):
         self.root.mainloop()
 
-
-# start up the app
-if __name__ == "__main__":
-    app = ResolutionGUI()
-    app.start()
