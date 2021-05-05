@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter import ttk
 
-from .clause_frame import ClauseFrame
+from clause_frame import ClauseFrame
 
 class ResolutionCanvas(Canvas):
     def __init__(self, master, app, **kwargs):

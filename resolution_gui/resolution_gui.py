@@ -1,4 +1,4 @@
-from .gui_main import ResolutionGUI
+from gui_main import ResolutionGUI
 
 # start up the app
 app = ResolutionGUI()
