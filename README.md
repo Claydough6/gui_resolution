@@ -1,5 +1,5 @@
 # gui_resolution
-Standalone logical resolution application for Computability and Logic RPI course final project.
+Logical resolution application for Computability and Logic RPI course final project. Uses Tkinter library for creating the GUI and PyProver library for CNF conversion. Resolution is done locally by the resolution engine.
 
 Authors: Clay Bell and Kevin Khaghani
 
@@ -44,3 +44,30 @@ How to use the application:
   -  this will check each premise, the conclusion, and the resolution steps
   -  any errors will be displayed in the error window
   -  if the derivation is successful the labels will change to 'valid!'
+
+## Application Strucure:
+The ResolutionGUI application consissts of a resolution engine and a graphical user interface. The GUI is used to get input from the user and display the results of the resolution. The resolution engine interacts with the GUI components to resolve the statements and clauses and check the user's derivations.
+
+The GUI contains the following components:
+ - root window (main application screen)
+ - menus
+ - statement and conclusion lists
+ - buttons for modifying premises / verifying resolution
+ - a canvas to draw the resolution
+ - clasue frames on the canvas
+ - separate windows displaying useful info
+
+The root window contains all of the other graphics of the application, and is created in the main appication class ResolutionGUI.
+
+The menus are used to access the help window and file input and output. Currently file IO is in the testing phase under the 'development' branch.
+
+The statement and conclusion lists live in the StatementFrame class on the left side of the app. They are each instances of the EditListbox class allowing users to easily modify the premises and conclusion and add new premises.
+
+The buttons live in the StatementFrame under the premises and conclusion. They allow users to add and delete premises as well as verify the final resolution.
+
+The canvas is a ResolutionCanvas and controls the graphics and placement of the clause frames. Users can create, edit, delete, and move around clause frames on the canvas.
+
+The ClauseFrame class hold the individual clause frames on the canvas and controls their properties, determining which inherit from which frames and other relevant data.
+
+Individual window for displaying useful information to the user are created as instances of the InfoWindow class. These include the help window, error window, and success window.
+
