@@ -1,5 +1,6 @@
 # gui_resolution
 Standalone logical resolution application for Computability and Logic RPI course final project.
+Authors: Clay Bell and Kevin Khaghani
 
 ## How to Use:
 Note: this is found in help.txt as well. It is displayed when the help menu is clicked in the app.
