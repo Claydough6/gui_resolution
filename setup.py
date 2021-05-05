@@ -8,4 +8,9 @@ setup(name="resolution_gui",
       author_email="claybell01@gmail.com",
       license="MIT",
       packages=["resolution_gui"],
+      install_requires=[
+          "tkinter",
+          "ttkthemes",
+          "pyprover",
+      ],
       zip_safe=False)
