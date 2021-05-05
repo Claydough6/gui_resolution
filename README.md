@@ -39,3 +39,8 @@ How to use the application:
   -  this only works for clauses that aren't linked to others
   -  click the premise again to unlink it 
   -  click a different premise to change which is linked
+
+10. To check derivations, click the 'Verify Resolution' button.
+  -  this will check each premise, the conclusion, and the resolution steps
+  -  any errors will be displayed in the error window
+  -  if the derivation is successful the labels will change to 'valid!'
