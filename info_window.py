@@ -15,8 +15,9 @@ class InfoWindow:
         if file:
             with open(text_or_file, 'r') as f:
                 text = f.read()
+
+        s = ttk.Style()
+        s.configure('Label1.TLabel', background="white")
             
-        label = Text(window, wrap="word")
-        label.insert("1.0", text)
-        label.configure(state="disabled")
+        label = ttk.Label(window, text=text, anchor=W, style='Label1.TLabel')
         label.grid(row=0, column=0, padx=10, pady=10, sticky=(N,S,E,W))
