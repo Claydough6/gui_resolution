@@ -71,3 +71,11 @@ The ClauseFrame class hold the individual clause frames on the canvas and contro
 
 Individual window for displaying useful information to the user are created as instances of the InfoWindow class. These include the help window, error window, and success window.
 
+## Resolution Flow
+The resolution function that is called to verify the canvas has three main validation sections: premise and conclusion validity, premise and conclusion representation, and clause derivation.
+
+Premise and conclusion validity double-checks that all premises and the one conclusion are prop-logic statements, and that the premises and conclusion are sound. If they are not, then the program knows to expect a resolution that does not result in the null set {}.
+
+Premise and conclusion representation is a sanity check on the "givens." Each premise (and the conclusion) should be represented by at least one clause on the Resolution Canvas.
+
+Finally, clause derivation follows the arrows from parent clause to child clause and checks for "one-step" validity, that is, that {A, B} and {~A} result in {B}. This should terminate in exactly one clause without children, that should either be the null set {} or a non-empty set.
