@@ -46,7 +46,7 @@ class ResolutionCanvas(Canvas):
                     to_delete.append((start, end))
                 if end == selected:
                     this = self.frames[start]
-                    this.child = None
+                    this.child.remove(end)
                     # undraw the line
                     to_delete.append((start, end))
             self.delete(selected)
@@ -114,16 +114,16 @@ class ResolutionCanvas(Canvas):
                         if clicked in this.parents:
                             # remove the other from this parents
                             this.parents.remove(clicked)
-                            other.child = None
+                            other.child.remove(this)
                             # if no parents, update state
                             if len(this.parents) == 0:
                                 this.state = None
                             # undraw the line
                             self.remove_line(clicked, selected)
-                        elif len(this.parents) < 2 and other.child == None:
+                        elif len(this.parents) < 2:
                             # update the parents
                             this.parents.append(clicked)
-                            other.child = this
+                            other.child.append(selected)
                             # update the state to regualar clause
                             this.state = "clause"
                             # draw the line between the two

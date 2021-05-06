@@ -13,7 +13,7 @@ class ClauseFrame(ttk.Frame):
         self.canvas = canvas
         
         self.parents = list()
-        self.child = None
+        self.child = list()
         self.premise_index = None
 
         self.state = None
