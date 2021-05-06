@@ -59,7 +59,7 @@ The GUI contains the following components:
  - statement and conclusion lists
  - buttons for modifying premises / verifying resolution
  - a canvas to draw the resolution
- - clasue frames on the canvas
+ - clause frames on the canvas
  - separate windows displaying useful info
 
 The root window contains all of the other graphics of the application, and is created in the main appication class ResolutionGUI.
